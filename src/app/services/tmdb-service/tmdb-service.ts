@@ -60,17 +60,9 @@ export class TmdbService {
         const trailer = trailerObj ? `https://www.youtube.com/watch?v=${trailerObj.key}` : null;
 
         const movie: Movie = {
-          id: data.id,
-          title: data.title,
-          overview: data.overview,
-          poster_path: data.poster_path,
-          backdrop_path: data.backdrop_path,
-          release_date: data.release_date,
-          vote_average: data.vote_average,
-          vote_count: data.vote_count,
+          ...data,
           director: director || 'Desconocido',
-          runtime: data.runtime || null,
-          trailer
+          trailer,
         };
 
         return movie;
