@@ -3,6 +3,7 @@ import { ReturnComponent } from "../../components/return-component/return-compon
 import { SearchBar } from "../../components/search-bar/search-bar";
 import { Movie } from '../../models/movie.model';
 import { TmdbService } from '../../services/tmdb-service/tmdb-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-page',
@@ -15,7 +16,7 @@ export class SearchPage {
   searchHistory = signal<string[]>([])
   isLoading = signal(false)
 
-  constructor(private tmdb: TmdbService) {}
+  constructor(private tmdb: TmdbService, private router: Router) {}
 
   ngOnInit() {
     this.loadSearchHistory()
@@ -44,6 +45,10 @@ export class SearchPage {
         this.isLoading.set(false)
       }
     })
+  }
+
+  goToMovieDetail(movieId: number) {
+    this.router.navigate(['/movie', movieId])
   }
 
   searchFromHistory(searchTerm: string) {

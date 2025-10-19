@@ -1,4 +1,4 @@
-<div class="">
+<div>
   <app-return-component pageName="Search" />
   
   <div class="max-w-4xl mx-auto mt-6">
@@ -47,7 +47,7 @@
         
         <div>
           @for (movie of movies(); track movie.id) {
-            <div class="py-4">
+            <div class="px-2 py-4 cursor-pointer hover:bg-zinc-800 hover:text-zinc-200 transition-all duration-100" (click)="goToMovieDetail(movie.id)">
               <div class="flex justify-between items-end border-b-1">
                 <p class="font-medium w-3/4"> {{ movie.title }}</p>
                 <p class="text-sm">{{getMovieYear(movie.release_date)}}</p>
