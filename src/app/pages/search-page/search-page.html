@@ -1,47 +1,52 @@
-<div>
+<div class="flex flex-col gap-3">
   <app-return-component pageName="Search" />
   
-  <div class="max-w-4xl mx-auto mt-6">
+  <section>
     <app-search-bar 
       [placeholder]="'Buscar películas...'" 
       (search)="onSearch($event)"
     />
-  </div>
+  </section>
 
-  @if (isLoading()) {
-    <div class="max-w-4xl mx-auto mt-8">
-      <div class="flex justify-center items-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-        <span class="ml-3 text-lg">Buscando películas...</span>
+  <section>
+    @if (!isLoading() && searchResults().length === 0 && error() === null) {
+      <p class="text-center">Busca películas escribiendo arriba</p>
+    }
+  </section>
+
+  <section>
+    @if (searchResults().length > 0) {
+      <div class="flex flex-col gap-5">
+        <h2 class="text-xl font-bold">Películas encontradas:</h2>
+        <ul class="flex flex-col gap-2">
+          @for (movie of searchResults(); track movie.id) {
+            <li 
+              class="py-3 px-1 cursor-pointer border-b-1 flex flex-row justify-between items-start movie-list transition-all duration-100"
+              (click)="onMovieSelect(movie.id)"
+            >
+              <img [src]="'https://image.tmdb.org/t/p/w92' + movie.poster_path" class="w-15 aspect-2/3 lg:w-20 xl:w-25 object-cover rounded-sm mr-5">
+              <p class="text-lg w-3/4">{{ movie.title }}</p>
+              <p class="text-sm">{{ movie.release_date | date: 'yyyy'}}</p>
+            </li>
+          }
+        </ul>
       </div>
-    </div>
-  }
+    }
+  </section>
 
-  @if (error()) {
-    <div class="max-w-4xl mx-auto mt-8">
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+  <section>
+    @if (isLoading()) {
+      <div class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-lg size-10 loading-color"></div>
+      </div>
+    }
+  </section>
+
+  <section>
+    @if (error()) {
+      <div class="bg-red-200 text-red-700 px-4 py-3 rounded">
         <strong>Error:</strong> {{ error() }}
       </div>
-    </div>
-  }
-
-  @if (searchResults().length > 0) {
-    <div class="max-w-md mx-auto mt-8">
-      <h2 class="text-xl font-bold mb-4">Películas encontradas:</h2>
-      <ul class="space-y-2">
-        @for (movie of searchResults(); track movie.id) {
-          <li 
-            class="p-3 bg-white rounded shadow cursor-pointer hover:bg-blue-50"
-            (click)="onMovieSelect(movie.id)"
-          >
-            {{ movie.title }} ({{ movie.release_date | date:'yyyy' }}) - ⭐ {{ movie.vote_average }}
-          </li>
-        }
-      </ul>
-    </div>
-  }
-
-  @if (!isLoading() && searchResults().length === 0 && error() === null) {
-    <p class="text-center mt-8 text-gray-500">Busca películas escribiendo arriba</p>
-  }
+    }
+  </section>
 </div>

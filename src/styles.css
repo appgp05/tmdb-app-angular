@@ -70,3 +70,12 @@ button {
 .search-bar {
   background-color: var(--button-bg);
 }
+
+.loading-color {
+  background-color: var(--foreground);
+}
+
+.movie-list:hover{
+  background-color: var(--foreground);
+  color: var(--background);
+}
