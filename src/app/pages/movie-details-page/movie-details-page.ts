@@ -3,12 +3,16 @@ import { ReturnComponent } from "../../components/return-component/return-compon
 import { Movie } from '../../models/movie.model';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from '../../services/tmdb-service/tmdb-service';
+import { DatePipe } from '@angular/common';
+import { NgIcon, provideIcons } from '@ng-icons/core'
+import { phosphorPlusBold } from '@ng-icons/phosphor-icons/bold';
 
 @Component({
   selector: 'app-movie-details-page',
-  imports: [ReturnComponent],
+  imports: [ReturnComponent, DatePipe, NgIcon],
   templateUrl: './movie-details-page.html',
-  styleUrl: './movie-details-page.css'
+  styleUrl: './movie-details-page.css',
+  viewProviders: [provideIcons({ phosphorPlusBold })]
 })
 export class MovieDetailsPage {
   movie?: Movie
