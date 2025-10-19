@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { TmdbService } from '../../services/tmdb-service/tmdb-service';
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorFunnelSimple, phosphorMagnifyingGlass } from '@ng-icons/phosphor-icons/regular'
 import { phosphorMonitorPlayFill } from '@ng-icons/phosphor-icons/fill'
