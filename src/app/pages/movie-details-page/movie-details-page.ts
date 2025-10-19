@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ReturnComponent } from "../../components/return-component/return-component";
 import { Movie } from '../../models/movie.model';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +16,7 @@ import { LocalStorageService } from '../../services/localStorage-service/local-s
   viewProviders: [provideIcons({ phosphorPlusBold, phosphorXBold })]
 })
 export class MovieDetailsPage {
-  movie?: Movie
+  movie = signal<Movie | null>(null)
   private localStorageService = inject(LocalStorageService)
 
   constructor(private route: ActivatedRoute, private tmdb: TmdbService) {}
@@ -33,7 +33,7 @@ export class MovieDetailsPage {
 
     this.tmdb.getMovieDetails(id).subscribe({
       next: (data) => {
-        this.movie = data;
+        this.movie.set(data)
         console.log('Detalles de la película:', data);
       },
       error: (err) => {
@@ -42,12 +42,12 @@ export class MovieDetailsPage {
     });
   }
 
-  isFavorite(movie?: Movie): boolean {
+  isFavorite(movie: Movie | null): boolean {
     if (!movie) return false;
     return this.localStorageService.isFavorite(movie.id);
   }
 
-  onMovieClick(movie?: Movie) {
+  onMovieClick(movie: Movie | null) {
     if (!movie) return;
 
     if (this.localStorageService.isFavorite(movie.id)) {
