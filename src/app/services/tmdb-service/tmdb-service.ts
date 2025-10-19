@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { Movie, MovieResponse } from '../../models/movie.model';
 
 @Injectable({
@@ -33,21 +33,31 @@ export class TmdbService {
   }
 
   getMovieDetails(id: number): Observable<Movie> {
-    return this.http.get<any>(this.functionUrl, {
+    const details$ = this.http.get<any>(this.functionUrl, {
       params: {
         path: `/movie/${id}`,
         language: 'es-ES',
-        append_to_response: 'credits, videos'
+        append_to_response: 'credits'
       }
-    }).pipe(
-      map((data) => {
-        const director = data.credits?.crew?.find((c: any) => c.job === 'Director')?.name
+    });
 
-        const trailerKey = data.videos?.results?.find(
-          (v: any) => v.type === 'Trailer' && v.site === 'Youtube'
-        )?.key;
+    const videos$ = this.http.get<any>(this.functionUrl, {
+      params: {
+        path: `/movie/${id}/videos`,
+        language: 'en-US'
+      }
+    });
 
-        const trailer = trailerKey ? `https://www.youtube.com/watch?v=${trailerKey}` : null;
+    // Combinamos ambas llamadas
+    return forkJoin([details$, videos$]).pipe(
+      map(([data, videosData]) => {
+        const director = data.credits?.crew?.find((c: any) => c.job === 'Director')?.name;
+
+        const trailerObj = videosData.results?.find(
+          (v: any) => v.type === 'Trailer' && v.site === 'YouTube'
+        );
+
+        const trailer = trailerObj ? `https://www.youtube.com/watch?v=${trailerObj.key}` : null;
 
         const movie: Movie = {
           id: data.id,
@@ -65,6 +75,6 @@ export class TmdbService {
 
         return movie;
       })
-    )
+    );
   }
 }
