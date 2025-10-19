@@ -16,9 +16,13 @@
         </div>
     </section>
     <section>
-        <button class="w-full rounded-lg py-3 flex flex-row gap-2 items-center justify-center">
-            <p class="font-bold">Add Movie</p>
-            <ng-icon name="phosphorPlusBold " />
+        <button
+        class="w-full rounded-lg py-3 flex flex-row gap-2 items-center justify-center"
+        (click)="onMovieClick(movie)">
+        <p class="font-bold">
+            {{ isFavorite(movie) ? 'Eliminar película' : 'Add Movie' }}
+        </p>
+        <ng-icon name="phosphorPlusBold" />
         </button>
     </section>
     <section>
