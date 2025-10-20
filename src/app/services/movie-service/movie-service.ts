@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Movie, MovieDetails, SearchResponse } from '../../models/movie.models';
+import { CrewMember, Movie, MovieDetails, SearchResponse } from '../../models/movie.models';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +51,7 @@ export class MovieService {
     this.isLoading.set(true)
     this.error.set(null)
 
-    const url = `${this.baseUrl}?path=/movie/${movieId}`
+    const url = `${this.baseUrl}?path=/movie/${movieId}&append_to_response=credits`
 
     this.http.get<MovieDetails>(url)
       .subscribe({
@@ -65,6 +65,26 @@ export class MovieService {
           console.error('Movie details error:', err)
         }
       })
+  }
+
+  getDirector(movie: MovieDetails): string | null {
+    if (!movie.credits?.crew) return null
+
+    const director = movie.credits.crew.find(
+      (person: CrewMember) => person.job === 'Director'
+    )
+
+    return director ? director.name : null
+  }
+
+  getDirectors(movie: MovieDetails): string[] {
+    if (!movie.credits?.crew) return [];
+    
+    const directors = movie.credits.crew.filter(
+      (person: CrewMember) => person.job === 'Director'
+    );
+    
+    return directors.map(director => director.name);
   }
 
   clearSearch(): void {

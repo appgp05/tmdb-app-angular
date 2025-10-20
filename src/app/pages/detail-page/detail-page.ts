@@ -19,6 +19,7 @@ export class DetailPage {
   private movieService = inject(MovieService)
 
   currentMovie = this.movieService.currentMovie
+  movieDetails = this.movieService.currentMovie
   isLoading = this.movieService.isLoading
   error = this.movieService.error
 
@@ -49,5 +50,15 @@ export class DetailPage {
       return `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     }
     return ''
+  }
+
+  getDirector(): string | null {
+    const movie = this.movieDetails()
+    return movie ? this.movieService.getDirector(movie) : null
+  }
+
+  getDirectors(): string[] {
+    const movie = this.movieDetails()
+    return movie ? this.movieService.getDirectors(movie) : []
   }
 }

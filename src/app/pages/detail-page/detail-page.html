@@ -9,14 +9,21 @@
           }
           
           <!-- Header -->
-          <div class="flex flex-col justify-between py-3">
+         <div class="flex flex-col justify-between py-3">
             <div class="flex flex-col">
-              <h1 class="font-bold text-xl">{{currentMovie()?.title}}</h1>
-              <p class="font-medium">{{currentMovie()?.release_date | date: 'yyyy'}} · Director</p>
+              <h1 class="font-bold text-xl">{{ currentMovie()?.title }}</h1>
+              <p class="font-medium">
+                {{ currentMovie()?.release_date | date: 'yyyy' }} · 
+                @if (getDirectors().length > 0) {
+                  <span>{{ getDirectors().join(', ') }}</span>
+                } @else {
+                  <span>Director no disponible</span>
+                }
+              </p>
             </div>
             <div class="flex flex-row gap-2 items-center">
               <a href="" class="detail-trailer rounded-sm py-1 px-3">Trailer</a>
-              <p>{{currentMovie()?.runtime}} min</p>
+              <p>{{ currentMovie()?.runtime }} min</p>
             </div>
           </div>
         </div>

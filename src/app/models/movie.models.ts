@@ -25,6 +25,30 @@ export interface MovieDetails {
     revenue: number
     status: string
     tagline: string
+    credits: Credits
+}
+
+export interface Credits {
+    cast: CastMember[]
+    crew: CrewMember[]
+}
+
+export interface CastMember {
+    id: number
+    name: string
+    character: string
+    credit_id: string
+    order: number
+    profile_path: string | null
+}
+
+export interface CrewMember {
+    id: number
+    name: string
+    job: string
+    credit_id: string
+    department: string
+    profile_path: string | null
 }
 
 export interface Genre {
