@@ -2,13 +2,16 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service/movie-service';
 import { ReturnComponent } from "../../components/return-component/return-component";
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe} from '@angular/common';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { phosphorPlusBold } from '@ng-icons/phosphor-icons/bold';
 
 @Component({
   selector: 'app-detail-page',
-  imports: [ReturnComponent, DatePipe, DecimalPipe],
+  imports: [ReturnComponent, DatePipe, NgIcon],
   templateUrl: './detail-page.html',
-  styleUrl: './detail-page.css'
+  styleUrl: './detail-page.css',
+  viewProviders: [provideIcons({ phosphorPlusBold })]
 })
 export class DetailPage {
   private route = inject(ActivatedRoute)

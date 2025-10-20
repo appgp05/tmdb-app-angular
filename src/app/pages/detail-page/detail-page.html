@@ -1,11 +1,38 @@
-<div class="flex flex-col gap-3">
-  <app-return-component pageName="" />
+<div class="flex flex-col gap-3">  
+<app-return-component pageName="{{currentMovie()?.title}}" />
 
-  <section>
+  <section class="flex flex-col gap-5">
     @if (currentMovie() && !isLoading()) {
-        @if (getBackdropUrl()) {
-            <div class="relative h-96 w-full bg-gray-500"></div>
-        }
+        <div class="flex flex-row gap-5">
+          @if (getPosterUrl()) {
+            <img [src]="getPosterUrl()" [alt]="currentMovie()?.title" class="w-35 aspect-2/3 rounded-md" />
+          }
+          
+          <!-- Header -->
+          <div class="flex flex-col justify-between py-3">
+            <div class="flex flex-col">
+              <h1 class="font-bold text-xl">{{currentMovie()?.title}}</h1>
+              <p class="font-medium">{{currentMovie()?.release_date | date: 'yyyy'}} · Director</p>
+            </div>
+            <div class="flex flex-row gap-2 items-center">
+              <a href="" class="detail-trailer rounded-sm py-1 px-3">Trailer</a>
+              <p>{{currentMovie()?.runtime}} min</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button class="flex flex-row gap-2 w-full py-2 rounded-md items-center justify-center">
+            <p class="font-bold">Add Movie</p>
+            <ng-icon name="phosphorPlusBold" />
+          </button>
+        </div>
+
+        <!-- Overview -->
+        <div>
+          <h2 class="font-bold text-lg">Overview</h2>
+          <p class="text-justify">{{currentMovie()?.overview}}</p>
+        </div>
     }
   </section>
 
