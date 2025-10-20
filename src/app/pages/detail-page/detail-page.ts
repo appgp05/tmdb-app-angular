@@ -20,6 +20,7 @@ export class DetailPage {
 
   currentMovie = this.movieService.currentMovie
   movieDetails = this.movieService.currentMovie
+  movieVideos = this.movieService.movieVideos
   isLoading = this.movieService.isLoading
   error = this.movieService.error
 
@@ -60,5 +61,14 @@ export class DetailPage {
   getDirectors(): string[] {
     const movie = this.movieDetails()
     return movie ? this.movieService.getDirectors(movie) : []
+  }
+
+  getTrailerUrl(): string | null {
+    const videos = this.movieVideos()
+    return this.movieService.getTrailerUrl(videos)
+  }
+
+  hasTrailer(): boolean {
+    return this.getTrailerUrl() !== null
   }
 }

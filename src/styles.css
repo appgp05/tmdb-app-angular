@@ -79,3 +79,8 @@ button {
   background-color: var(--foreground);
   color: var(--background);
 }
+
+.detail-trailer {
+  background-color: var(--button-bg);
+  color: var(--foreground)
+}

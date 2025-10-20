@@ -26,11 +26,16 @@ export interface MovieDetails {
     status: string
     tagline: string
     credits: Credits
+    videos: Videos
 }
 
 export interface Credits {
     cast: CastMember[]
     crew: CrewMember[]
+}
+
+export interface Videos {
+    results: VideoInformation[]
 }
 
 export interface CastMember {
@@ -49,6 +54,15 @@ export interface CrewMember {
     credit_id: string
     department: string
     profile_path: string | null
+}
+
+export interface VideoInformation {
+    id: string
+    key: string
+    name: string
+    site: string
+    type: string
+    official: boolean
 }
 
 export interface Genre {

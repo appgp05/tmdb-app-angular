@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { CrewMember, Movie, MovieDetails, SearchResponse } from '../../models/movie.models';
+import { CrewMember, Movie, MovieDetails, SearchResponse, VideoInformation } from '../../models/movie.models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,7 @@ export class MovieService {
 
   searchResults = signal<Movie[]>([])
   currentMovie = signal<MovieDetails | null>(null)
+  movieVideos = signal<VideoInformation[]>([])
   isLoading = signal(false)
   error = signal<string | null>(null)
 
@@ -53,16 +54,39 @@ export class MovieService {
 
     const url = `${this.baseUrl}?path=/movie/${movieId}&append_to_response=credits`
 
+    console.log('Fetching movie details from:', url)
+
     this.http.get<MovieDetails>(url)
       .subscribe({
         next: (movie) => {
+          console.log('Movie details response:', movie)          
           this.currentMovie.set(movie)
           this.isLoading.set(false)
+
+          this.getMovieVideos(movieId)
         },
         error: (err) => {
           this.error.set('Failed to load movie details')
           this.isLoading.set(false)
           console.error('Movie details error:', err)
+        }
+      })
+  }
+
+  getMovieVideos(movieId: number): void {
+    const url = `${this.baseUrl}?path=/movie/${movieId}/videos`
+
+    console.log('Fetching movie videos from:', url)
+
+    this.http.get<{ results: VideoInformation[] }>(url)
+      .subscribe({
+        next: (response) => {
+          console.log('Videos response:', response)
+          this.movieVideos.set(response.results || [])
+        },
+        error: (err) => {
+          console.error('Error fetching videos: ', err)
+          this.movieVideos.set([])
         }
       })
   }
@@ -85,6 +109,51 @@ export class MovieService {
     );
     
     return directors.map(director => director.name);
+  }
+
+  getTrailerUrl(videos: VideoInformation[]): string | null {
+    if (!videos || videos.length === 0) {
+      return null
+    }
+
+    console.log('Available videos:', videos)
+
+    // Prioridad 1: Trailer oficial de YouTube
+    const officialTrailer = videos.find(video => 
+      video.site === 'YouTube' && 
+      video.type === 'Trailer' &&
+      video.official === true
+    )
+
+    if (officialTrailer) {
+      console.log('Found official trailer:', officialTrailer)
+      return `https://www.youtube.com/watch?v=${officialTrailer.key}`
+    }
+
+    // Prioridad 2: Cualquier trailer de YouTube
+    const anyTrailer = videos.find(video => 
+      video.site === 'YouTube' && 
+      video.type === 'Trailer'
+    )
+
+    if (anyTrailer) {
+      console.log('Found any trailer:', anyTrailer)
+      return `https://www.youtube.com/watch?v=${anyTrailer.key}`
+    }
+
+    // Prioridad 3: Teaser de YouTube
+    const teaser = videos.find(video => 
+      video.site === 'YouTube' && 
+      video.type === 'Teaser'
+    )
+
+    if (teaser) {
+      console.log('Found teaser:', teaser)
+      return `https://www.youtube.com/watch?v=${teaser.key}`
+    }
+
+    console.log('No suitable trailer found')
+    return null
   }
 
   clearSearch(): void {
