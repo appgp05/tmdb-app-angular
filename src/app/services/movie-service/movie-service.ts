@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { CrewMember, Movie, MovieDetails, SearchResponse, VideoInformation } from '../../models/movie.models';
+import { StorageService } from '../storage-service/storage-service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +9,21 @@ import { CrewMember, Movie, MovieDetails, SearchResponse, VideoInformation } fro
 export class MovieService {
   private http = inject(HttpClient)
   private baseUrl = '/.netlify/functions/tmdb'
+  private storageService = inject(StorageService)
 
   searchResults = signal<Movie[]>([])
   currentMovie = signal<MovieDetails | null>(null)
   movieVideos = signal<VideoInformation[]>([])
   isLoading = signal(false)
   error = signal<string | null>(null)
+
+  isCurrentMovieSaved = computed(() => {
+    const movie = this.currentMovie()
+    const savedMovies = this.storageService.savedMovies()
+    
+    if (!movie) return false
+    return this.storageService.isMovieSaved(movie.id)
+  })
 
   searchMovies(query: string, page: number = 1): void {
     this.isLoading.set(true)
@@ -59,7 +69,7 @@ export class MovieService {
     this.http.get<MovieDetails>(url)
       .subscribe({
         next: (movie) => {
-          console.log('Movie details response:', movie)          
+          // console.log('Movie details response:', movie)          
           this.currentMovie.set(movie)
           this.isLoading.set(false)
 
@@ -81,7 +91,7 @@ export class MovieService {
     this.http.get<{ results: VideoInformation[] }>(url)
       .subscribe({
         next: (response) => {
-          console.log('Videos response:', response)
+          // console.log('Videos response:', response)
           this.movieVideos.set(response.results || [])
         },
         error: (err) => {
@@ -116,7 +126,7 @@ export class MovieService {
       return null
     }
 
-    console.log('Available videos:', videos)
+    // console.log('Available videos:', videos)
 
     // Prioridad 1: Trailer oficial de YouTube
     const officialTrailer = videos.find(video => 
@@ -126,7 +136,7 @@ export class MovieService {
     )
 
     if (officialTrailer) {
-      console.log('Found official trailer:', officialTrailer)
+      // console.log('Found official trailer:', officialTrailer)
       return `https://www.youtube.com/watch?v=${officialTrailer.key}`
     }
 
@@ -137,7 +147,7 @@ export class MovieService {
     )
 
     if (anyTrailer) {
-      console.log('Found any trailer:', anyTrailer)
+      // console.log('Found any trailer:', anyTrailer)
       return `https://www.youtube.com/watch?v=${anyTrailer.key}`
     }
 
@@ -148,7 +158,7 @@ export class MovieService {
     )
 
     if (teaser) {
-      console.log('Found teaser:', teaser)
+      // console.log('Found teaser:', teaser)
       return `https://www.youtube.com/watch?v=${teaser.key}`
     }
 
@@ -162,5 +172,21 @@ export class MovieService {
 
   clearCurrentMovie(): void {
     this.currentMovie.set(null)
+  }
+
+  addCurrentMovieToSaved(): boolean {
+    const movie = this.currentMovie()
+    if (!movie) {
+      return false
+    }
+    return this.storageService.addMovie(movie)
+  }
+
+  removeCurrentMovieFromSaved(): boolean {
+    const movie = this.currentMovie()
+    if (!movie) {
+      return false
+    }
+    return this.storageService.removeMovie(movie.id)
   }
 }

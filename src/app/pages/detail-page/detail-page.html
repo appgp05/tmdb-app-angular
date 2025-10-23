@@ -42,9 +42,14 @@
         </div>
 
         <div>
-          <button class="flex flex-row gap-2 w-full py-2 rounded-md items-center justify-center">
-            <p class="font-bold">Add Movie</p>
-            <ng-icon name="phosphorPlusBold" />
+          <button class="flex flex-row gap-2 w-full py-2 rounded-md items-center justify-center" (click)="toggleSaveMovie()">
+            @if (isMovieSaved()) {
+              <p class="font-bold">Remove Movie</p>
+              <ng-icon name="phosphorXBold" />
+            } @else {
+              <p class="font-bold">Add Movie</p>
+              <ng-icon name="phosphorPlusBold" />
+            }
           </button>
         </div>
 

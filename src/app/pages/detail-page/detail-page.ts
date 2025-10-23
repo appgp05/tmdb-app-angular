@@ -4,14 +4,14 @@ import { MovieService } from '../../services/movie-service/movie-service';
 import { ReturnComponent } from "../../components/return-component/return-component";
 import { DatePipe} from '@angular/common';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorPlusBold } from '@ng-icons/phosphor-icons/bold';
+import { phosphorPlusBold, phosphorXBold } from '@ng-icons/phosphor-icons/bold';
 
 @Component({
   selector: 'app-detail-page',
   imports: [ReturnComponent, DatePipe, NgIcon],
   templateUrl: './detail-page.html',
   styleUrl: './detail-page.css',
-  viewProviders: [provideIcons({ phosphorPlusBold })]
+  viewProviders: [provideIcons({ phosphorPlusBold, phosphorXBold })]
 })
 export class DetailPage {
   private route = inject(ActivatedRoute)
@@ -23,6 +23,8 @@ export class DetailPage {
   movieVideos = this.movieService.movieVideos
   isLoading = this.movieService.isLoading
   error = this.movieService.error
+  
+  isMovieSaved = this.movieService.isCurrentMovieSaved
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -70,5 +72,13 @@ export class DetailPage {
 
   hasTrailer(): boolean {
     return this.getTrailerUrl() !== null
+  }
+
+  toggleSaveMovie(): void {
+    if (this.isMovieSaved()) {
+      this.movieService.removeCurrentMovieFromSaved()
+    } else {
+      this.movieService.addCurrentMovieToSaved()
+    }
   }
 }
