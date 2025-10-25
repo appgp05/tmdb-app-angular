@@ -5,10 +5,7 @@
             <p>{{ savedMovies().length }} {{ savedMovies().length === 1 ? 'film' : 'films' }} </p>
         </div>
         <div class="flex flex-row gap-5">
-            <button class="flex flex-row gap-2 items-center px-5 rounded-sm">
-                <p>Sort</p>
-                <ng-icon name="phosphorFunnelSimple "/>
-            </button>
+            <app-sort-menu-component />
             <button class="h-7 w-7 rounded-sm flex justify-center items-center">
                 <ng-icon name="phosphorMagnifyingGlass" />
             </button>
