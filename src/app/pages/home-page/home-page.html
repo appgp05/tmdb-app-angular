@@ -6,14 +6,12 @@
         </div>
         <div class="flex flex-row gap-5">
             <app-sort-menu-component />
-            <button class="h-7 w-7 rounded-sm flex justify-center items-center">
-                <ng-icon name="phosphorMagnifyingGlass" />
-            </button>
         </div>
         <button class="w-full py-2 rounded-sm flex flex-row gap-2 items-center justify-center text-xl">
             <p>Choose Movie</p>
             <ng-icon name="phosphorMonitorPlayFill"/>
         </button>
     </section>
-    <app-movie-grid />
+    
+    <app-movie-grid [movies]="savedMovies()" />
 </main>
