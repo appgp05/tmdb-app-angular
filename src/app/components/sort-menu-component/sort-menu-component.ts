@@ -2,14 +2,14 @@ import { Component, inject } from '@angular/core';
 import { SortService } from '../../services/sort-service/sort-service';
 import { SortOption } from '../../models/sort.model';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorCaretDown, phosphorCheck } from '@ng-icons/phosphor-icons/regular';
+import { phosphorFunnelSimple , phosphorCheck } from '@ng-icons/phosphor-icons/regular';
 
 @Component({
   selector: 'app-sort-menu-component',
   imports: [NgIcon],
   templateUrl: './sort-menu-component.html',
   styleUrl: './sort-menu-component.css',
-  viewProviders: [provideIcons({ phosphorCheck, phosphorCaretDown })]
+  viewProviders: [provideIcons({ phosphorCheck, phosphorFunnelSimple })]
 })
 export class SortMenuComponent {
   private sortService = inject(SortService)
