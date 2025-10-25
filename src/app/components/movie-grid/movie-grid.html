@@ -6,7 +6,7 @@
     
     @for (movie of movies(); track movie.id) {
       @if (hasPoster(movie)) {
-        <button class="movie-card aspect-2/3 overflow-hidden">
+        <button class="movie-card aspect-2/3 overflow-hidden" (click)="onMovieSelect(movie.id)">
           <img 
             [src]="getPosterUrl(movie)" 
             [alt]="movie.title"
@@ -14,7 +14,7 @@
           />
         </button>
       } @else {
-        <button class="movie-card aspect-2/3">
+        <button class="movie-card aspect-2/3" (click)="onMovieSelect(movie.id)">
           <ng-icon name="phosphorFilmSlateFill" />
           <span class="text-xs mt-2 line-clamp-2">{{ movie.title }}</span>
         </button>

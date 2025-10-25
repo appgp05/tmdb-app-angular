@@ -31,22 +31,9 @@ export class MovieService {
 
     const url = `${this.baseUrl}?path=/search/movie&query=${encodeURIComponent(query)}&page=${page}`
 
-    console.log('Searching movies with query:', query)
-    console.log('URL:', url)
-
     this.http.get<SearchResponse>(url)
       .subscribe({
         next: (response) => {
-          console.log('Search successful:', response)
-          console.log('Movies found:', response.results.length)
-          console.log('Page:', response.page)
-          console.log('Total pages:', response.total_pages)
-          console.log('Total results:', response.total_results)
-
-          response.results.forEach((movie, index) => {
-            console.log(`${index + 1} · ${movie.title} (ID: ${movie.id})`)
-          })
-
           this.searchResults.set(response.results)
           this.isLoading.set(false)
         },
@@ -64,12 +51,9 @@ export class MovieService {
 
     const url = `${this.baseUrl}?path=/movie/${movieId}&append_to_response=credits`
 
-    console.log('Fetching movie details from:', url)
-
     this.http.get<MovieDetails>(url)
       .subscribe({
-        next: (movie) => {
-          // console.log('Movie details response:', movie)          
+        next: (movie) => {      
           this.currentMovie.set(movie)
           this.isLoading.set(false)
 
@@ -86,13 +70,10 @@ export class MovieService {
   getMovieVideos(movieId: number): void {
     const url = `${this.baseUrl}?path=/movie/${movieId}/videos`
 
-    console.log('Fetching movie videos from:', url)
-
     this.http.get<{ results: VideoInformation[] }>(url)
       .subscribe({
         next: (response) => {
-          // console.log('Videos response:', response)
-          this.movieVideos.set(response.results || [])
+        this.movieVideos.set(response.results || [])
         },
         error: (err) => {
           console.error('Error fetching videos: ', err)
@@ -126,8 +107,6 @@ export class MovieService {
       return null
     }
 
-    // console.log('Available videos:', videos)
-
     // Prioridad 1: Trailer oficial de YouTube
     const officialTrailer = videos.find(video => 
       video.site === 'YouTube' && 
@@ -136,7 +115,6 @@ export class MovieService {
     )
 
     if (officialTrailer) {
-      // console.log('Found official trailer:', officialTrailer)
       return `https://www.youtube.com/watch?v=${officialTrailer.key}`
     }
 
@@ -147,7 +125,6 @@ export class MovieService {
     )
 
     if (anyTrailer) {
-      // console.log('Found any trailer:', anyTrailer)
       return `https://www.youtube.com/watch?v=${anyTrailer.key}`
     }
 
@@ -158,11 +135,10 @@ export class MovieService {
     )
 
     if (teaser) {
-      // console.log('Found teaser:', teaser)
       return `https://www.youtube.com/watch?v=${teaser.key}`
     }
 
-    console.log('No suitable trailer found')
+    console.error('No suitable trailer found')
     return null
   }
 
