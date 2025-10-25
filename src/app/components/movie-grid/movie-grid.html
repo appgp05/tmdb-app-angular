@@ -3,11 +3,22 @@
     <button class="movie-card" routerLink="/search">
         <ng-icon name="phosphorPlus" />
     </button>
-    <button class="movie-card">
-        <ng-icon name="phosphorFilmSlateFill" />
-    </button>
-    <button class="movie-card">
-        <ng-icon name="phosphorFilmSlateFill" />
-    </button>
+    
+    @for (movie of movies(); track movie.id) {
+      @if (hasPoster(movie)) {
+        <button class="movie-card aspect-2/3 overflow-hidden">
+          <img 
+            [src]="getPosterUrl(movie)" 
+            [alt]="movie.title"
+            class="w-full h-full object-cover"
+          />
+        </button>
+      } @else {
+        <button class="movie-card aspect-2/3">
+          <ng-icon name="phosphorFilmSlateFill" />
+          <span class="text-xs mt-2 line-clamp-2">{{ movie.title }}</span>
+        </button>
+      }
+    }
   </div>
 </main>

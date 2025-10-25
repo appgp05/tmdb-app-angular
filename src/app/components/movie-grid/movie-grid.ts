@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorFilmSlateFill } from '@ng-icons/phosphor-icons/fill';
 import { phosphorPlus } from '@ng-icons/phosphor-icons/regular';
 import { RouterLink } from "@angular/router";
+import { Movie, MovieDetails } from '../../models/movie.models';
+import { StorageService } from '../../services/storage-service/storage-service';
 
 
 @Component({
@@ -13,5 +15,18 @@ import { RouterLink } from "@angular/router";
   viewProviders: [provideIcons({ phosphorPlus, phosphorFilmSlateFill })]
 })
 export class MovieGrid {
+  private storageService = inject(StorageService)
 
+  movies = this.storageService.savedMovies
+
+  getPosterUrl(movie: Movie | MovieDetails): string {
+    if (movie?.poster_path) {
+      return `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+    }
+    return ''
+  }
+
+  hasPoster(movie: Movie | MovieDetails): boolean {
+    return !!movie?.poster_path
+  }
 }
