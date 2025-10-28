@@ -16,29 +16,9 @@ import { GenreService } from '../../services/genre-service/genre-service';
 })
 export class HomePage {
   private storageService = inject(StorageService)
-  private genresService = inject(GenreService)
 
   savedMovies = this.storageService.savedMovies
   moviesCount = signal(this.savedMovies().length)
 
-  constructor() {
-    console.log('savedMovies():', this.savedMovies())
-
-    effect(() => {
-      const movies = this.savedMovies()
-      console.log(movies)
-    })
-  }
-
-  ngOnInit() {
-    console.log('Iniciando carga de géneros...');
-    this.genresService.loadMovieGenres();
-    
-    // Verificar los géneros después de un tiempo
-    setTimeout(() => {
-      console.log('Géneros después de 2 segundos:', this.genresService.genres());
-      console.log('Estado de carga:', this.genresService.loading());
-      console.log('Error:', this.genresService.error());
-    }, 2000);
-  }
+  constructor() {}
 }

@@ -1,24 +1,25 @@
-<div class="relative">
-  <input 
+<div
+  class="flex flex-row justify-between items-center gap-2 p-2 border-b transition-all duration-300"
+  [class.text-white]="!searchTerm()"
+  [class.border-white]="!searchTerm()"
+  [class.font-light]="!searchTerm()"
+  [class.bg-[var(--foreground)]]="searchTerm()"
+  [class.font-black]="searchTerm()"
+  [class.text-[var(--background)]]="searchTerm()"
+>
+  <input
     type="text"
     [value]="searchTerm()"
     (input)="onInputChange($event)"
     [placeholder]="placeholder()"
-    class="search-bar w-full rounded-md p-2 outline-0 pr-10"
-  >
+    class="w-full bg-transparent focus:outline-none"
+  />
 
-  <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
-    @if (searchTerm().length > 0) {
-      <button
-        (click)="searchTerm.set(''); search.emit('')"
-        class="flex items-center justify-center"
-      >
-        <ng-icon name="phosphorX" />
-      </button>
-    } @else {
-      <div class="flex items-center justify-center">
-        <ng-icon name="phosphorMagnifyingGlass" />
-      </div>
-    }
-  </div>
+  @if (!searchTerm()) {
+    <ng-icon name="phosphorMagnifyingGlass"></ng-icon>
+  } @else {
+    <button (click)="clearSearch()">
+      <ng-icon name="phosphorXBold" />
+    </button>
+  }
 </div>

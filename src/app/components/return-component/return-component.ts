@@ -1,15 +1,15 @@
 import { Component, input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorArrowBendUpLeftBold } from '@ng-icons/phosphor-icons/bold';
-import { Router, RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { Location } from '@angular/common'
+import { phosphorArrowLeftBold } from '@ng-icons/phosphor-icons/bold';
 
 @Component({
   selector: 'app-return-component',
-  imports: [NgIcon, RouterLink],
+  imports: [NgIcon],
   templateUrl: './return-component.html',
   styleUrl: './return-component.css',
-  viewProviders: [provideIcons({ phosphorArrowBendUpLeftBold })]
+  viewProviders: [provideIcons({ phosphorArrowLeftBold })]
 })
 export class ReturnComponent {
   pageName = input.required<string>()

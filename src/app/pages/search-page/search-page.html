@@ -3,7 +3,7 @@
   
   <section>
     <app-search-bar 
-      [placeholder]="'Buscar películas...'" 
+      [placeholder]="'SEARCH'" 
       (search)="onSearch($event)"
     />
   </section>
@@ -14,7 +14,8 @@
     }
   </section>
 
-  <section>
+  <!-- Resultados -->
+  <!-- <section>
     @if (searchResults().length > 0) {
       <div class="flex flex-col gap-5">
         <h2 class="text-xl font-bold">Películas encontradas:</h2>
@@ -32,8 +33,9 @@
         </ul>
       </div>
     }
-  </section>
+  </section> -->
 
+  <!-- Loading -->
   <section>
     @if (isLoading()) {
       <div class="flex justify-center items-center py-12">
@@ -42,6 +44,7 @@
     }
   </section>
 
+  <!-- Error -->
   <section>
     @if (error()) {
       <div class="bg-red-200 text-red-700 px-4 py-3 rounded">
@@ -49,4 +52,5 @@
       </div>
     }
   </section>
+
 </div>

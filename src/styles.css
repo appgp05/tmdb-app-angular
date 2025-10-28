@@ -29,6 +29,7 @@ Colores
 :root {
   --background: #09090B; 
   --foreground: #F4F4F5;
+  --selection-bg: #a1a1aa;
 }
 
 /* .dark {
@@ -44,7 +45,12 @@ body {
 }
 
 ::selection {
-  background-color: var(--foreground);
+  background-color: var(--selection-bg);
   color: var(--background);
   text-shadow: none;
+}
+
+.search-bar {
+  background-color: var(--foreground);
+  color: var(--color-black);
 }
