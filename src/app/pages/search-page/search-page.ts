@@ -5,10 +5,11 @@ import { SearchBar } from "../../components/search-bar/search-bar";
 import { Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service/movie-service';
 import { GenreService } from '../../services/genre-service/genre-service';
+import { SearchResults } from "../../components/search-results/search-results";
 
 @Component({
   selector: 'app-search-page',
-  imports: [ReturnComponent, SearchBar, DatePipe],
+  imports: [ReturnComponent, SearchBar, DatePipe, SearchResults],
   templateUrl: './search-page.html',
   styleUrl: './search-page.css'
 })
@@ -17,11 +18,10 @@ export class SearchPage {
   private genreService = inject(GenreService)
   private router = inject(Router)
 
-  genres = this.genreService.genres
   searchResults = this.movieService.searchResults
   isLoading = this.movieService.isLoading
   error = this.movieService.error
-
+  genres = this.genreService.genres
   showAllGenres = signal(false)
 
   ngOnInit() {
