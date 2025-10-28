@@ -2,6 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Movie, MovieDetails } from '../../models/movie.models';
 import { SortService } from '../sort-service/sort-service';
 import { SortOption } from '../../models/sort.model';
+import { SearchHistoryItem } from '../../models/history.model';
 
 
 @Injectable({
@@ -125,5 +126,57 @@ export class StorageService {
 
   getSavedMoviesCount(): number {
     return this.getMoviesFromStorage().length
+  }
+
+  private searchHistorySignal = signal<SearchHistoryItem[]>(this.getSearchHistoryFromStorage())
+  searchHistory = this.searchHistorySignal.asReadonly()
+
+  private getSearchHistoryFromStorage(): SearchHistoryItem[] {
+    if (typeof window === 'undefined') return []
+
+    try {
+      const stored = localStorage.getItem('searchHistory')
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  }
+
+  private saveSearchHistoryToStorage(history: SearchHistoryItem[]): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      localStorage.setItem('searchHistory', JSON.stringify(history));
+    } catch (error) {
+      console.error('Error saving search history:', error);
+    }
+  }
+
+  addToSearchHistory(query: string): void {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+
+    const currentHistory = this.searchHistorySignal();
+    
+    // Eliminar búsquedas duplicadas (mantener la más reciente)
+    const filteredHistory = currentHistory.filter(item => 
+      item.query.toLowerCase() !== trimmedQuery.toLowerCase()
+    );
+
+    const newHistoryItem: SearchHistoryItem = {
+      query: trimmedQuery,
+      timestamp: Date.now(),
+    };
+
+    // Agregar al inicio del array y limitar a 20 elementos
+    const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 20);
+
+    this.searchHistorySignal.set(newHistory);
+    this.saveSearchHistoryToStorage(newHistory);
+  }
+
+  clearSearchHistory(): void {
+    this.searchHistorySignal.set([]);
+    this.saveSearchHistoryToStorage([]);
   }
 }

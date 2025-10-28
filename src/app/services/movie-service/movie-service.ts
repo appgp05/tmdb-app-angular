@@ -36,6 +36,10 @@ export class MovieService {
         next: (response) => {
           this.searchResults.set(response.results)
           this.isLoading.set(false)
+
+          if (response.results.length > 0) {
+            this.storageService.addToSearchHistory(query)
+          }
         },
         error: (err) => {
           this.error.set('Failed to search movies')

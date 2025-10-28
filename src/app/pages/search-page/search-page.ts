@@ -6,22 +6,28 @@ import { Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service/movie-service';
 import { GenreService } from '../../services/genre-service/genre-service';
 import { SearchResults } from "../../components/search-results/search-results";
+import { StorageService } from '../../services/storage-service/storage-service';
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';
 
 @Component({
   selector: 'app-search-page',
-  imports: [ReturnComponent, SearchBar, DatePipe, SearchResults],
+  imports: [ReturnComponent, SearchBar, SearchResults, NgIcon],
   templateUrl: './search-page.html',
-  styleUrl: './search-page.css'
+  styleUrl: './search-page.css',
+  viewProviders: [provideIcons({ phosphorArrowUpRight })]
 })
 export class SearchPage {
   private movieService = inject(MovieService)
   private genreService = inject(GenreService)
+  private storageService = inject(StorageService)
   private router = inject(Router)
 
   searchResults = this.movieService.searchResults
   isLoading = this.movieService.isLoading
   error = this.movieService.error
   genres = this.genreService.genres
+  searchHistory = this.storageService.searchHistory
   
   showAllGenres = signal(false)
   selectedGenre = signal<string | null>(null)
@@ -47,6 +53,15 @@ export class SearchPage {
   onGenreSelect(genreId: number, genreName: string): void {
     this.selectedGenre.set(genreName)
     this.movieService.searchMoviesByGenre(genreId)
+  }
+
+  onSearchFromHistory(query: string): void {
+    this.selectedGenre.set(null)
+    this.movieService.searchMovies(query)
+  }
+
+  clearAllHistory(): void {
+    this.storageService.clearSearchHistory()
   }
 
   getGenresToShow() {
