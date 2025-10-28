@@ -50,6 +50,25 @@
     }
   </section>
 
+  <section>
+    @if (!isLoading() && searchResults().length === 0 && error() === null) {
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-row justify-between text-sm font-light px-3">
+          <p>RECENT MOVIES</p>
+          <p class="cursor-pointer font-normal hover:underline" (click)="clearAllMovieHistory()">CLEAR</p>
+        </div>
+        @if (movieHistory().length > 0) {
+          @for (item of movieHistory(); track item.timestamp) {
+            <div class="flex flex-row justify-between px-3 hover:underline cursor-pointer" (click)="onMovieSelect(item.movie.id)" >
+              <p> {{item.movie.title}} </p>
+              <ng-icon name="phosphorArrowUpRight" />
+            </div>
+          }
+        }
+      </div>
+    }
+  </section>
+
   <!-- Resultados -->
   <section>
     <app-search-results

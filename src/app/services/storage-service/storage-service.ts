@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Movie, MovieDetails } from '../../models/movie.models';
 import { SortService } from '../sort-service/sort-service';
 import { SortOption } from '../../models/sort.model';
-import { SearchHistoryItem } from '../../models/history.model';
+import { MovieHistoryItem, SearchHistoryItem } from '../../models/history.model';
 
 
 @Injectable({
@@ -178,5 +178,59 @@ export class StorageService {
   clearSearchHistory(): void {
     this.searchHistorySignal.set([]);
     this.saveSearchHistoryToStorage([]);
+  }
+
+  private movieHistorySignal = signal<MovieHistoryItem[]>(this.getMovieHistoryFromStorage())
+  movieHistory = this.movieHistorySignal.asReadonly()
+
+  private getMovieHistoryFromStorage(): MovieHistoryItem[] {
+    if (typeof window === 'undefined') return [];
+    
+    try {
+      const stored = localStorage.getItem('movieHistory');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private saveMovieHistoryToStorage(history: MovieHistoryItem[]): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      localStorage.setItem('movieHistory', JSON.stringify(history));
+    } catch (error) {
+      console.error('Error saving movie history:', error);
+    }
+  }
+
+  addToMovieHistory(movie: Movie | MovieDetails): void {
+    const currentHistory = this.movieHistorySignal();
+    
+    // Eliminar duplicados (mantener la más reciente)
+    const filteredHistory = currentHistory.filter(item => 
+      item.movie.id !== movie.id
+    );
+
+    const newHistoryItem: MovieHistoryItem = {
+      movie: movie,
+      timestamp: Date.now(),
+    };
+
+    // Agregar al inicio del array y limitar a 50 elementos
+    const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 50);
+
+    this.movieHistorySignal.set(newHistory);
+    this.saveMovieHistoryToStorage(newHistory);
+  }
+
+  clearMovieHistory(): void {
+    this.movieHistorySignal.set([]);
+    this.saveMovieHistoryToStorage([]);
+  }
+
+  getRecentMovies(limit: number = 10): Movie[] {
+    const history = this.movieHistorySignal();
+    return history.slice(0, limit).map(item => item.movie as Movie);
   }
 }

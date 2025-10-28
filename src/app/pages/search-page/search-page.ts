@@ -9,6 +9,7 @@ import { SearchResults } from "../../components/search-results/search-results";
 import { StorageService } from '../../services/storage-service/storage-service';
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';
+import { Movie } from '../../models/movie.models';
 
 @Component({
   selector: 'app-search-page',
@@ -28,6 +29,7 @@ export class SearchPage {
   error = this.movieService.error
   genres = this.genreService.genres
   searchHistory = this.storageService.searchHistory
+  movieHistory = this.storageService.movieHistory
   
   showAllGenres = signal(false)
   selectedGenre = signal<string | null>(null)
@@ -47,7 +49,16 @@ export class SearchPage {
   }
 
   onMovieSelect(movieId: number): void {
+    const movie = this.searchResults().find(m => m.id === movieId)
+    if (movie) {
+      this.storageService.addToMovieHistory(movie)
+    }
     this.router.navigate(['/movie', movieId])
+  }
+
+  onMovieSelectFromHistory(movie: Movie): void {
+    this.storageService.addToMovieHistory(movie)
+    this.router.navigate(['/movie', movie.id])
   }
 
   onGenreSelect(genreId: number, genreName: string): void {
@@ -62,6 +73,10 @@ export class SearchPage {
 
   clearAllHistory(): void {
     this.storageService.clearSearchHistory()
+  }
+
+  clearAllMovieHistory(): void {
+    this.storageService.clearMovieHistory()
   }
 
   getGenresToShow() {
