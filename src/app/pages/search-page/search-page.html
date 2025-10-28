@@ -10,7 +10,24 @@
 
   <section>
     @if (!isLoading() && searchResults().length === 0 && error() === null) {
-      <p class="text-center">Busca películas escribiendo arriba</p>
+      <div class="flex flex-row justify-between p-3">
+        <p class="text-sm font-light">GENRES</p>
+        <div class="flex flex-col">
+          @for (genre of getGenresToShow(); track genre.id) {
+            <p class="cursor-pointer font-medium hover:underline text-right">
+              {{ genre.name }}
+            </p>
+          }
+
+          @if (genres().length > 10) {
+            @if (!showAllGenres()) {
+              <button (click)="loadMoreGenres()" class="text-right font-light text-sm"> LOAD MORE </button>
+            } @else {
+              <button (click)="showLessGenres()" class="text-right font-light text-sm"> LOAD LESS </button>
+            }
+          }
+        </div>
+      </div>
     }
   </section>
 
