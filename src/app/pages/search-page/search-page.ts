@@ -22,7 +22,9 @@ export class SearchPage {
   isLoading = this.movieService.isLoading
   error = this.movieService.error
   genres = this.genreService.genres
+  
   showAllGenres = signal(false)
+  selectedGenre = signal<string | null>(null)
 
   ngOnInit() {
     this.genreService.loadMovieGenres()
@@ -30,14 +32,21 @@ export class SearchPage {
 
   onSearch(term: string): void {
     if (term.trim().length >= 2) {
+      this.selectedGenre.set(null)
       this.movieService.searchMovies(term)
     } else if (term.trim().length === 0) {
       this.movieService.clearSearch()
+      this.selectedGenre.set(null)
     }
   }
 
   onMovieSelect(movieId: number): void {
     this.router.navigate(['/movie', movieId])
+  }
+
+  onGenreSelect(genreId: number, genreName: string): void {
+    this.selectedGenre.set(genreName)
+    this.movieService.searchMoviesByGenre(genreId)
   }
 
   getGenresToShow() {
@@ -54,5 +63,10 @@ export class SearchPage {
 
   showLessGenres() {
     this.showAllGenres.set(false);
+  }
+
+  clearSearch(): void {
+    this.movieService.clearSearch()
+    this.selectedGenre.set(null)
   }
 }

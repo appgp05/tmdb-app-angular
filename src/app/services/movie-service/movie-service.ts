@@ -45,6 +45,26 @@ export class MovieService {
     })
   }
 
+  searchMoviesByGenre(genreId: number, page: number = 1): void {
+  this.isLoading.set(true)
+  this.error.set(null)
+
+  const url = `${this.baseUrl}?path=/discover/movie&with_genres=${genreId}&page=${page}&sort_by=popularity.desc`
+
+  this.http.get<SearchResponse>(url)
+    .subscribe({
+      next: (response) => {
+        this.searchResults.set(response.results)
+        this.isLoading.set(false)
+      },
+      error: (err) => {
+        this.error.set('Failed to search movies by genre')
+        this.isLoading.set(false)
+        console.error('Genre search error:', err)
+      }
+    })
+  }
+
   getMovieDetails(movieId: number): void {
     this.isLoading.set(true)
     this.error.set(null)

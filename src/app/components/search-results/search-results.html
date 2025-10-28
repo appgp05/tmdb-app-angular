@@ -1,7 +1,21 @@
 <!-- Resultados -->
 @if (searchResults().length > 0) {
   <div class="flex flex-col gap-5">
-    <h2 class="text-xl font-bold">Películas encontradas:</h2>
+    <!-- Mostrar título según si hay género seleccionado o búsqueda normal -->
+    @if (selectedGenre()) {
+      <h2 class="text-xl font-bold">Películas de: {{ selectedGenre() }}</h2>
+    } @else {
+      <h2 class="text-xl font-bold">Películas encontradas:</h2>
+    }
+    
+    <!-- Botón para limpiar búsqueda -->
+    <button 
+      (click)="onClearSearch()" 
+      class="self-start text-sm text-blue-500 hover:underline"
+    >
+      ← Clear search
+    </button>
+
     <ul class="flex flex-col gap-2">
       @for (movie of searchResults(); track movie.id) {
         <li 
@@ -32,5 +46,6 @@
 @if (error()) {
   <div class="bg-red-200 text-red-700 px-4 py-3 rounded">
     <strong>Error:</strong> {{ error() }}
+    <button (click)="onClearSearch()" class="ml-2 text-sm underline">Try again</button>
   </div>
 }

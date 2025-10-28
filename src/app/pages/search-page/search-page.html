@@ -14,7 +14,7 @@
         <p class="text-sm font-light">GENRES</p>
         <div class="flex flex-col">
           @for (genre of getGenresToShow(); track genre.id) {
-            <p class="cursor-pointer font-medium hover:underline text-right">
+            <p class="cursor-pointer font-medium hover:underline text-right" (click)="onGenreSelect(genre.id, genre.name)">
               {{ genre.name }}
             </p>
           }
@@ -34,10 +34,12 @@
   <!-- Resultados -->
   <section>
     <app-search-results
-    [searchResults]="searchResults()"
-    [isLoading]="isLoading()"
-    [error]="error()"
-    (movieSelected)="onMovieSelect($event)"
+      [searchResults]="searchResults()"
+      [isLoading]="isLoading()"
+      [error]="error()"
+      [selectedGenre]="selectedGenre()"
+      (movieSelected)="onMovieSelect($event)"
+      (clearSearch)="clearSearch()"
     />
   </section>
 

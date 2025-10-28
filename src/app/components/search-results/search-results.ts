@@ -9,12 +9,18 @@ import { Movie } from '../../models/movie.models';
 })
 export class SearchResults {
   searchResults = input.required<Movie[]>()
+  selectedGenre = input<string | null>(null)
   isLoading = input<boolean>(false)
   error = input<string | null>(null)
 
   movieSelected = output<number>()
+  clearSearch = output<void>()
 
   onMovieSelect(movieId: number): void {
     this.movieSelected.emit(movieId)
+  }
+
+  onClearSearch(): void {
+    this.clearSearch.emit()
   }
 }

@@ -1,15 +1,14 @@
 import { Component, input, output, signal } from '@angular/core';
-import { timeout } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { phosphorMagnifyingGlass} from '@ng-icons/phosphor-icons/regular';
-import { phosphorXBold } from '@ng-icons/phosphor-icons/bold';
+import { phosphorMagnifyingGlassBold } from '@ng-icons/phosphor-icons/bold';
 
 @Component({
   selector: 'app-search-bar',
   imports: [NgIcon],
   templateUrl: './search-bar.html',
   styleUrl: './search-bar.css',
-  viewProviders: [provideIcons({ phosphorXBold, phosphorMagnifyingGlass })]
+  viewProviders: [provideIcons({ phosphorMagnifyingGlass, phosphorMagnifyingGlassBold })]
 })
 export class SearchBar {
   placeholder = input('Buscar...')
@@ -39,9 +38,5 @@ export class SearchBar {
         this.search.emit(term)
       }
     }, this.debounceTime());
-  }
-
-  clearSearch(): void {
-    this.searchTerm.set('')
   }
 }
