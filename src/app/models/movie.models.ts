@@ -76,3 +76,7 @@ export interface SearchResponse {
     total_pages: number
     total_results: number
 }
+
+export interface GenreResponse {
+    genres: Genre[]
+}
