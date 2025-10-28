@@ -27,20 +27,14 @@ Colores
 */
 
 :root {
-  --background: #f1f5f9; 
-  --foreground: #18181b;
-  --selection-bg: #18181b;
-  --selection-text: #f1f5f9;
-  --button-bg: #d1d5db;
+  --background: #09090B; 
+  --foreground: #F4F4F5;
 }
 
-.dark {
-  --background: #18181b;
-  --foreground: #f1f5f9;
-  --selection-bg: #f1f5f9;
-  --selection-text: #18181b;
-  --button-bg: #27272a;
-}
+/* .dark {
+  --background: #09090B; 
+  --foreground: #F4F4F5;
+} */
 
 body {
     font-family: 'Satoshi', sans-serif;
@@ -50,37 +44,7 @@ body {
 }
 
 ::selection {
-  background-color: var(--selection-bg);
-  color: var(--selection-text);
-  text-shadow: none;
-}
-
-button {
-  background-color: var(--button-bg);
-  color: var(--foreground);
-  cursor: pointer;
-}
-
-.movie-card {
-  aspect-ratio: 3/4;
-  background-color: var(--button-bg); /* bg-gray-200 */
-  border-radius: 0.5rem; /* rounded-lg */
-}
-
-.search-bar {
-  background-color: var(--button-bg);
-}
-
-.loading-color {
-  background-color: var(--foreground);
-}
-
-.movie-list:hover{
   background-color: var(--foreground);
   color: var(--background);
-}
-
-.detail-trailer {
-  background-color: var(--button-bg);
-  color: var(--foreground)
+  text-shadow: none;
 }
