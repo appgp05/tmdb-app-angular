@@ -209,16 +209,19 @@ export class StorageService {
     
     // Eliminar duplicados (mantener la más reciente)
     const filteredHistory = currentHistory.filter(item => 
-      item.movie.id !== movie.id
+      item.id !== movie.id
     );
 
     const newHistoryItem: MovieHistoryItem = {
-      movie: movie,
+      id: movie.id,
+      title: movie.title,
+      poster_path: movie.poster_path,
+      release_date: movie.release_date,
       timestamp: Date.now(),
     };
 
     // Agregar al inicio del array y limitar a 50 elementos
-    const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 50);
+    const newHistory = [newHistoryItem, ...filteredHistory].slice(0, 3);
 
     this.movieHistorySignal.set(newHistory);
     this.saveMovieHistoryToStorage(newHistory);
@@ -229,8 +232,8 @@ export class StorageService {
     this.saveMovieHistoryToStorage([]);
   }
 
-  getRecentMovies(limit: number = 10): Movie[] {
+  getRecentMovies(limit: number = 10): MovieHistoryItem[] {
     const history = this.movieHistorySignal();
-    return history.slice(0, limit).map(item => item.movie as Movie);
+    return history.slice(0, limit);
   }
 }

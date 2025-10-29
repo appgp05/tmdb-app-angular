@@ -6,6 +6,9 @@ export interface SearchHistoryItem {
 }
 
 export interface MovieHistoryItem {
-    movie: Movie | MovieDetails
+    id: number
+    title: string
+    poster_path: string | null
+    release_date: string
     timestamp: number
 }

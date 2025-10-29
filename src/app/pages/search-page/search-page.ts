@@ -10,10 +10,11 @@ import { StorageService } from '../../services/storage-service/storage-service';
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';
 import { Movie } from '../../models/movie.models';
+import { MovieList } from "../../components/movie-list/movie-list";
 
 @Component({
   selector: 'app-search-page',
-  imports: [ReturnComponent, SearchBar, SearchResults, NgIcon],
+  imports: [ReturnComponent, SearchBar, SearchResults, NgIcon, MovieList],
   templateUrl: './search-page.html',
   styleUrl: './search-page.css',
   viewProviders: [provideIcons({ phosphorArrowUpRight })]
@@ -59,6 +60,10 @@ export class SearchPage {
   onMovieSelectFromHistory(movie: Movie): void {
     this.storageService.addToMovieHistory(movie)
     this.router.navigate(['/movie', movie.id])
+  }
+
+  onMovieSelectFromList(movieId: number): void {
+    this.router.navigate(['/movie', movieId])
   }
 
   onGenreSelect(genreId: number, genreName: string): void {

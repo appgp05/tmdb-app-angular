@@ -1,6 +1,7 @@
 <div class="flex flex-col gap-3">
   <app-return-component pageName="Search" />
   
+  <!-- Search Bar -->
   <section>
     <app-search-bar 
       [placeholder]="'SEARCH'" 
@@ -8,64 +9,71 @@
     />
   </section>
 
-  <section>
+  <section class="flex flex-col gap-15">
     @if (!isLoading() && searchResults().length === 0 && error() === null) {
-      <div class="flex flex-row justify-between p-3">
-        <p class="text-sm font-light">GENRES</p>
-        <div class="flex flex-col">
-          @for (genre of getGenresToShow(); track genre.id) {
-            <p class="cursor-pointer font-medium hover:underline text-right" (click)="onGenreSelect(genre.id, genre.name)">
-              {{ genre.name }}
-            </p>
-          }
+      <!-- Genres -->
+      <section>
+        @if (!isLoading() && searchResults().length === 0 && error() === null) {
+          <div class="flex flex-row justify-between px-3">
+            <p class="text-sm font-light">GENRES</p>
+            <div class="flex flex-col">
+              @for (genre of getGenresToShow(); track genre.id) {
+                <p class="cursor-pointer font-medium hover:underline text-right" (click)="onGenreSelect(genre.id, genre.name)">
+                  {{ genre.name }}
+                </p>
+              }
 
-          @if (genres().length > 10) {
-            @if (!showAllGenres()) {
-              <button (click)="loadMoreGenres()" class="text-right font-light text-sm"> LOAD MORE </button>
-            } @else {
-              <button (click)="showLessGenres()" class="text-right font-light text-sm"> LOAD LESS </button>
+              @if (genres().length > 10) {
+                @if (!showAllGenres()) {
+                  <button (click)="loadMoreGenres()" class="text-right font-light text-sm"> LOAD MORE </button>
+                } @else {
+                  <button (click)="showLessGenres()" class="text-right font-light text-sm"> LOAD LESS </button>
+                }
+              }
+            </div>
+          </div>
+        }
+      </section>
+
+      <!-- Text History -->
+      <section>
+        @if (!isLoading() && searchResults().length === 0 && error() === null) {
+          <div class="flex flex-col gap-3">
+            <div class="flex flex-row justify-between text-sm font-light px-3">
+              <p>RECENT SEARCHES</p>
+              <p class="cursor-pointer font-normal hover:underline" (click)="clearAllHistory()">CLEAR</p>
+            </div>
+            @if (searchHistory().length > 0) {
+              @for (item of searchHistory(); track item.timestamp) {
+                <div class="flex flex-row justify-between px-3 hover:underline cursor-pointer" (click)="onSearchFromHistory(item.query)">
+                  <p> {{item.query}} </p>
+                  <ng-icon name="phosphorArrowUpRight" />
+                </div>
+              }
             }
-          }
-        </div>
-      </div>
-    }
-  </section>
-
-  <section>
-    @if (!isLoading() && searchResults().length === 0 && error() === null) {
-      <div class="flex flex-col gap-3">
-        <div class="flex flex-row justify-between text-sm font-light px-3">
-          <p>RECENT SEARCHES</p>
-          <p class="cursor-pointer font-normal hover:underline" (click)="clearAllHistory()">CLEAR</p>
-        </div>
-        @if (searchHistory().length > 0) {
-          @for (item of searchHistory(); track item.timestamp) {
-            <div class="flex flex-row justify-between px-3 hover:underline cursor-pointer" (click)="onSearchFromHistory(item.query)">
-              <p> {{item.query}} </p>
-              <ng-icon name="phosphorArrowUpRight" />
-            </div>
-          }
+          </div>
         }
-      </div>
-    }
-  </section>
+      </section>
 
-  <section>
-    @if (!isLoading() && searchResults().length === 0 && error() === null) {
-      <div class="flex flex-col gap-3">
-        <div class="flex flex-row justify-between text-sm font-light px-3">
-          <p>RECENT MOVIES</p>
-          <p class="cursor-pointer font-normal hover:underline" (click)="clearAllMovieHistory()">CLEAR</p>
-        </div>
-        @if (movieHistory().length > 0) {
-          @for (item of movieHistory(); track item.timestamp) {
-            <div class="flex flex-row justify-between px-3 hover:underline cursor-pointer" (click)="onMovieSelect(item.movie.id)" >
-              <p> {{item.movie.title}} </p>
-              <ng-icon name="phosphorArrowUpRight" />
+      <!-- Movie History -->
+      <section>
+        @if (!isLoading() && searchResults().length === 0 && error() === null) {
+          <div class="flex flex-col gap-3">
+            <div class="flex flex-row justify-between text-sm font-light px-3">
+              <p>RECENT MOVIES</p>
+              <p class="cursor-pointer font-normal hover:underline" (click)="clearAllMovieHistory()">CLEAR</p>
             </div>
-          }
+            @if (movieHistory().length > 0) {
+              <app-movie-list
+                [title]="'RECENT MOVIES'"
+                [movies]="movieHistory()"
+                (movieSelected)="onMovieSelectFromList($event)"
+                (clearList)="clearAllMovieHistory()"
+              />
+            }
+          </div>
         }
-      </div>
+      </section>
     }
   </section>
 
