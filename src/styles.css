@@ -37,6 +37,10 @@ Colores
   --foreground: #F4F4F5;
 } */
 
+* {
+  text-transform: uppercase;
+}
+
 body {
     font-family: 'Satoshi', sans-serif;
     color: var(--foreground);
