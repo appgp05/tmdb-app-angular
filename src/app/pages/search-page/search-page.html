@@ -5,7 +5,7 @@
   <section>
     <app-search-bar 
       [placeholder]="'SEARCH'" 
-      [value]="searchInputValue()"
+      [value]="currentSearchTerm()"
       (search)="onSearch($event)"
       (clear)="onClearSearch()"
     />
@@ -25,7 +25,7 @@
                 </p>
               }
 
-              @if (genres().length > 10) {
+              @if (genres().length > 10 && !currentSearchTerm()) {
                 @if (!showAllGenres()) {
                   <button (click)="loadMoreGenres()" class="text-right font-light text-sm"> LOAD MORE </button>
                 } @else {
@@ -45,7 +45,7 @@
               <p>RECENT SEARCHES</p>
               <p class="cursor-pointer font-normal hover:underline" (click)="clearAllHistory()">CLEAR</p>
             </div>
-            @if (searchHistory().length > 0) {
+            @if (searchHistory().length > 0 && !currentSearchTerm()) {
               @for (item of searchHistory(); track item.timestamp) {
                 <div class="flex flex-row justify-between px-3 hover:underline cursor-pointer" (click)="onSearchFromHistory(item.query)">
                   <p> {{item.query}} </p>
@@ -65,7 +65,7 @@
               <p>RECENT MOVIES</p>
               <p class="cursor-pointer font-normal hover:underline" (click)="clearAllMovieHistory()">CLEAR</p>
             </div>
-            @if (movieHistory().length > 0) {
+            @if (movieHistory().length > 0 && !currentSearchTerm()) {
               <app-movie-list
                 [title]="'RECENT MOVIES'"
                 [movies]="movieHistory()"

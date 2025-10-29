@@ -236,4 +236,38 @@ export class StorageService {
     const history = this.movieHistorySignal();
     return history.slice(0, limit);
   }
+
+  private currentSearchTermSignal = signal<string>(this.getCurrentSearchTermFromStorage())
+  currentSearchTerm = this.currentSearchTermSignal.asReadonly()
+
+  private getCurrentSearchTermFromStorage(): string {
+    if (typeof window === 'undefined') return ''
+
+    try {
+      const stored = localStorage.getItem('currentSearchTerm')
+      return stored ? JSON.parse(stored) : ''
+    } catch {
+      return ''
+    }
+  }
+
+  private saveCurrentSearchTermToStorage(term: string): void {
+    if (typeof window === 'undefined') return
+
+    try {
+      localStorage.setItem('currentSearchTerm', JSON.stringify(term))
+    } catch (error) {
+      console.error('Error saving current search term:', error)
+    }
+  }
+
+  setCurrentSearchTerm(term: string): void {
+    this.currentSearchTermSignal.set(term);
+    this.saveCurrentSearchTermToStorage(term);
+  }
+
+  clearCurrentSearchTerm(): void {
+    this.currentSearchTermSignal.set('');
+    this.saveCurrentSearchTermToStorage('');
+  }
 }

@@ -31,6 +31,7 @@ export class SearchPage {
   genres = this.genreService.genres
   searchHistory = this.storageService.searchHistory
   movieHistory = this.storageService.movieHistory
+  currentSearchTerm = this.storageService.currentSearchTerm
   
   showAllGenres = signal(false)
   selectedGenre = signal<string | null>(null)
@@ -38,15 +39,21 @@ export class SearchPage {
 
   ngOnInit() {
     this.genreService.loadMovieGenres()
+    
+    if (this.currentSearchTerm() && this.currentSearchTerm().trim().length >= 2) {
+      this.movieService.searchMovies(this.currentSearchTerm())
+    }
   }
 
   onSearch(term: string): void {
     if (term.trim().length >= 2) {
       this.selectedGenre.set(null)
+      this.storageService.setCurrentSearchTerm(term)
       this.movieService.searchMovies(term)
     } else if (term.trim().length === 0) {
       this.movieService.clearSearch()
       this.selectedGenre.set(null)
+      this.storageService.clearCurrentSearchTerm()
     }
   }
 
@@ -54,6 +61,7 @@ export class SearchPage {
     this.movieService.clearSearch()
     this.selectedGenre.set(null)
     this.searchInputValue.set('')
+    this.storageService.clearCurrentSearchTerm()
   }
 
   onMovieSelect(movieId: number): void {
@@ -76,10 +84,11 @@ export class SearchPage {
   onGenreSelect(genreId: number, genreName: string): void {
     this.selectedGenre.set(genreName)
     this.movieService.searchMoviesByGenre(genreId)
+    this.storageService.clearCurrentSearchTerm()
   }
 
   onSearchFromHistory(query: string): void {
-    this.searchInputValue.set(query)
+    this.storageService.setCurrentSearchTerm(query)
     this.selectedGenre.set(null)
     this.movieService.searchMovies(query)
   }
