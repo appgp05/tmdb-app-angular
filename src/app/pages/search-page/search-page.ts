@@ -82,9 +82,10 @@ export class SearchPage {
   }
 
   onGenreSelect(genreId: number, genreName: string): void {
+    const searchText = `${genreName}`
+    this.storageService.setCurrentSearchTerm(searchText)
     this.selectedGenre.set(genreName)
     this.movieService.searchMoviesByGenre(genreId)
-    this.storageService.clearCurrentSearchTerm()
   }
 
   onSearchFromHistory(query: string): void {
