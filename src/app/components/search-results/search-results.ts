@@ -1,11 +1,14 @@
 import { Component, input, output } from '@angular/core';
 import { Movie } from '../../models/movie.models';
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { phosphorArrowClockwiseLight } from '@ng-icons/phosphor-icons/light';
 
 @Component({
   selector: 'app-search-results',
-  imports: [],
+  imports: [NgIcon],
   templateUrl: './search-results.html',
-  styleUrl: './search-results.css'
+  styleUrl: './search-results.css',
+  viewProviders: [provideIcons({ phosphorArrowClockwiseLight })]
 })
 export class SearchResults {
   searchResults = input.required<Movie[]>()

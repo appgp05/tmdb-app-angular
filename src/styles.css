@@ -48,9 +48,4 @@ body {
   background-color: var(--selection-bg);
   color: var(--background);
   text-shadow: none;
-}
-
-.search-bar {
-  background-color: var(--foreground);
-  color: var(--color-black);
-}
+} 

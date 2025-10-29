@@ -1,7 +1,7 @@
 <div
   class="flex flex-row justify-between items-center gap-2 p-3 border-b transition-all duration-300"
-  [class.text-white]="!searchTerm()"
-  [class.border-white]="!searchTerm()"
+  [class.text-[var(--foreground)]]="!searchTerm()"
+  [class.border-[var(--foreground)]]="!searchTerm()"
   [class.font-light]="!searchTerm()"
   [class.bg-[var(--foreground)]]="searchTerm()"
   [class.font-black]="searchTerm()"

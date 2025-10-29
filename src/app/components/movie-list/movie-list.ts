@@ -1,14 +1,12 @@
 import { Component, input, output } from '@angular/core';
 import { MovieHistoryItem } from '../../models/history.model';
-import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';
 
 @Component({
   selector: 'app-movie-list',
-  imports: [NgIcon],
+  imports: [],
   templateUrl: './movie-list.html',
   styleUrl: './movie-list.css',
-  viewProviders: [provideIcons({ phosphorArrowUpRight })]
 })
 export class MovieList {
   movies = input.required<MovieHistoryItem[]>()
