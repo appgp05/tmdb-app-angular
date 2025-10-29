@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { phosphorMagnifyingGlass} from '@ng-icons/phosphor-icons/regular';
 import { phosphorXBold } from '@ng-icons/phosphor-icons/bold';
@@ -14,6 +14,7 @@ export class SearchBar {
   placeholder = input('Buscar...')
   searchMode = input<'api' | 'local'>('api')
   debounceTime = input(300)
+  value = input('')
 
   search = output<string>()
   searchTermChanged = output<string>()
@@ -22,6 +23,13 @@ export class SearchBar {
   protected searchTerm = signal('')
 
   private timeoutId: any;
+
+  constructor() {
+    effect(() => {
+      const externalValue = this.value()
+      this.searchTerm.set(externalValue)
+    })
+  }
 
   protected onInputChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value

@@ -5,7 +5,9 @@
   <section>
     <app-search-bar 
       [placeholder]="'SEARCH'" 
+      [value]="searchInputValue()"
       (search)="onSearch($event)"
+      (clear)="onClearSearch()"
     />
   </section>
 
@@ -85,7 +87,7 @@
       [error]="error()"
       [selectedGenre]="selectedGenre()"
       (movieSelected)="onMovieSelect($event)"
-      (clearSearch)="clearSearch()"
+      (clearSearch)="onClearSearch()"
     />
   </section>
 
