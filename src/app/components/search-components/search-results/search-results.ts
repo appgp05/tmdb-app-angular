@@ -1,5 +1,5 @@
 import { Component, computed, input, output } from '@angular/core';
-import { Movie } from '../../models/movie.models';
+import { Movie } from '../../../models/movie.models';
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorArrowClockwiseLight } from '@ng-icons/phosphor-icons/light';
 import { DatePipe } from '@angular/common';

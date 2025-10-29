@@ -14,28 +14,14 @@
   <section class="flex flex-col gap-15">
     @if (!isLoading() && searchResults().length === 0 && error() === null) {
       <!-- Genres -->
-      <section>
-        @if (!isLoading() && searchResults().length === 0 && error() === null) {
-          <div class="flex flex-row justify-between px-3">
-            <p class="text-sm font-light">GENRES</p>
-            <div class="flex flex-col">
-              @for (genre of getGenresToShow(); track genre.id) {
-                <p class="cursor-pointer font-medium hover:underline text-right" (click)="onGenreSelect(genre.id, genre.name)">
-                  {{ genre.name }}
-                </p>
-              }
-
-              @if (genres().length > 10 && !currentSearchTerm()) {
-                @if (!showAllGenres()) {
-                  <button (click)="loadMoreGenres()" class="text-right font-light text-sm"> LOAD MORE </button>
-                } @else {
-                  <button (click)="showLessGenres()" class="text-right font-light text-sm"> LOAD LESS </button>
-                }
-              }
-            </div>
-          </div>
-        }
-      </section>
+      <app-search-genres
+        [genres]="genres()"
+        [showAllGenres]="showAllGenres()"
+        [currentSearchTerm]="currentSearchTerm()"
+        (genreSelected)="onGenreSelect($event.id, $event.name)"
+        (loadMore)="loadMoreGenres()"
+        (showLess)="showLessGenres()"
+      />
 
       <!-- Text History -->
       <section>

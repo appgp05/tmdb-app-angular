@@ -1,20 +1,21 @@
 import { Component, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ReturnComponent } from "../../components/return-component/return-component";
-import { SearchBar } from "../../components/search-bar/search-bar";
+import { SearchBar } from "../../components/search-components/search-bar/search-bar";
 import { Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service/movie-service';
 import { GenreService } from '../../services/genre-service/genre-service';
-import { SearchResults } from "../../components/search-results/search-results";
+import { SearchResults } from "../../components/search-components/search-results/search-results";
 import { StorageService } from '../../services/storage-service/storage-service';
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';
 import { Movie } from '../../models/movie.models';
 import { MovieList } from "../../components/movie-list/movie-list";
+import { SearchGenres } from "../../components/search-components/search-genres/search-genres";
 
 @Component({
   selector: 'app-search-page',
-  imports: [ReturnComponent, SearchBar, SearchResults, NgIcon, MovieList],
+  imports: [ReturnComponent, SearchBar, SearchResults, NgIcon, MovieList, SearchGenres],
   templateUrl: './search-page.html',
   styleUrl: './search-page.css',
   viewProviders: [provideIcons({ phosphorArrowUpRight })]
