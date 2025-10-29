@@ -1,6 +1,5 @@
 import { Component, input, output } from '@angular/core';
 import { MovieHistoryItem, SearchHistoryItem } from '../../../models/history.model';
-import { Movie } from '../../../models/movie.models';
 import { MovieList } from "../../movie-list/movie-list";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';

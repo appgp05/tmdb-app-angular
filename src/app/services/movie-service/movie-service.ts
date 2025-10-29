@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { CrewMember, Movie, MovieDetails, SearchResponse, VideoInformation } from '../../models/movie.models';
 import { StorageService } from '../storage-service/storage-service';
+import { HistoryService } from '../history-service/history-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class MovieService {
   private http = inject(HttpClient)
   private baseUrl = '/.netlify/functions/tmdb'
   private storageService = inject(StorageService)
+  private historyService = inject(HistoryService)
 
   searchResults = signal<Movie[]>([])
   currentMovie = signal<MovieDetails | null>(null)
@@ -38,7 +40,7 @@ export class MovieService {
           this.isLoading.set(false)
 
           if (response.results.length > 0) {
-            this.storageService.addToSearchHistory(query)
+            this.historyService.addToSearchHistory(query)
           }
         },
         error: (err) => {

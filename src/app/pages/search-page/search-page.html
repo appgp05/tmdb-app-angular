@@ -23,40 +23,16 @@
         (showLess)="showLessGenres()"
       />
 
-      <!-- Text History -->
-      <section>
-        @if (!isLoading() && searchResults().length === 0 && error() === null) {
-          <app-search-history
-            [searchHistory]="searchHistory()"
-            [movieHistory]="movieHistory()"
-            [currentSearchTerm]="currentSearchTerm()"
-            (searchFromHistory)="onSearchFromHistory($event)"
-            (clearSearchHistory)="clearAllHistory()"
-            (movieSelected)="onMovieSelectFromList($event)"
-            (clearMovieHistory)="clearAllMovieHistory()"
-          />
-        }
-      </section>
-
       <!-- Movie History -->
-      <section>
-        @if (!isLoading() && searchResults().length === 0 && error() === null) {
-          <div class="flex flex-col gap-3">
-            <div class="flex flex-row justify-between text-sm font-light px-3">
-              <p>RECENT MOVIES</p>
-              <p class="cursor-pointer font-normal hover:underline" (click)="clearAllMovieHistory()">CLEAR</p>
-            </div>
-            @if (movieHistory().length > 0 && !currentSearchTerm()) {
-              <app-movie-list
-                [title]="'RECENT MOVIES'"
-                [movies]="movieHistory()"
-                (movieSelected)="onMovieSelectFromList($event)"
-                (clearList)="clearAllMovieHistory()"
-              />
-            }
-          </div>
-        }
-      </section>
+      <app-search-history
+        [searchHistory]="searchHistory()"
+        [movieHistory]="movieHistory()"
+        [currentSearchTerm]="currentSearchTerm()"
+        (searchFromHistory)="onSearchFromHistory($event)"
+        (clearSearchHistory)="clearAllHistory()"
+        (movieSelected)="onMovieSelectFromList($event)"
+        (clearMovieHistory)="clearAllMovieHistory()"
+      />
     }
   </section>
 
