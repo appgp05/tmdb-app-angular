@@ -1,10 +1,11 @@
 import { Component, input, output } from '@angular/core';
 import { MovieHistoryItem } from '../../models/history.model';
 import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-movie-list',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './movie-list.html',
   styleUrl: './movie-list.css',
 })
@@ -24,10 +25,5 @@ export class MovieList {
     } else {
       return '/assets/placeholder-movie.jpg';
     }
-  }
-
-  getYearFromDate(date: string): string {
-    if (!date) return '';
-    return new Date(date).getFullYear().toString();
   }
 }

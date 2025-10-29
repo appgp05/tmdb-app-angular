@@ -2,10 +2,11 @@ import { Component, input, output } from '@angular/core';
 import { Movie } from '../../models/movie.models';
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { phosphorArrowClockwiseLight } from '@ng-icons/phosphor-icons/light';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-search-results',
-  imports: [NgIcon],
+  imports: [NgIcon, DatePipe],
   templateUrl: './search-results.html',
   styleUrl: './search-results.css',
   viewProviders: [provideIcons({ phosphorArrowClockwiseLight })]
