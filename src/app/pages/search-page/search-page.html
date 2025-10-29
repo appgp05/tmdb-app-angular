@@ -26,20 +26,15 @@
       <!-- Text History -->
       <section>
         @if (!isLoading() && searchResults().length === 0 && error() === null) {
-          <div class="flex flex-col gap-3">
-            <div class="flex flex-row justify-between text-sm font-light px-3">
-              <p>RECENT SEARCHES</p>
-              <p class="cursor-pointer font-normal hover:underline" (click)="clearAllHistory()">CLEAR</p>
-            </div>
-            @if (searchHistory().length > 0 && !currentSearchTerm()) {
-              @for (item of searchHistory(); track item.timestamp) {
-                <div class="flex flex-row justify-between px-3 hover:underline cursor-pointer" (click)="onSearchFromHistory(item.query)">
-                  <p> {{item.query}} </p>
-                  <ng-icon name="phosphorArrowUpRight" />
-                </div>
-              }
-            }
-          </div>
+          <app-search-history
+            [searchHistory]="searchHistory()"
+            [movieHistory]="movieHistory()"
+            [currentSearchTerm]="currentSearchTerm()"
+            (searchFromHistory)="onSearchFromHistory($event)"
+            (clearSearchHistory)="clearAllHistory()"
+            (movieSelected)="onMovieSelectFromList($event)"
+            (clearMovieHistory)="clearAllMovieHistory()"
+          />
         }
       </section>
 

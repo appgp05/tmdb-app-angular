@@ -1,0 +1,46 @@
+<div class="search-history">
+  <!-- Text Search History -->
+  @if (hasSearchHistory()) {
+    <section class="mb-15">
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-row justify-between text-sm font-light px-3">
+          <p>RECENT SEARCHES</p>
+          <p class="cursor-pointer font-normal hover:underline" 
+             (click)="onClearSearchHistory()">
+            CLEAR
+          </p>
+        </div>
+        
+        @for (item of searchHistory(); track item.timestamp) {
+          <div class="flex flex-row justify-between px-3 hover:underline cursor-pointer" 
+               (click)="onSearchFromHistory(item.query)">
+            <p>{{ item.query }}</p>
+            <ng-icon name="phosphorArrowUpRight" />
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Movie History -->
+  @if (hasMovieHistory()) {
+    <section>
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-row justify-between text-sm font-light px-3">
+          <p>RECENT MOVIES</p>
+          <p class="cursor-pointer font-normal hover:underline" 
+             (click)="onClearMovieHistory()">
+            CLEAR
+          </p>
+        </div>
+        
+        <app-movie-list
+          [title]="'RECENT MOVIES'"
+          [movies]="movieHistory()"
+          (movieSelected)="onMovieSelect($event)"
+          (clearList)="onClearMovieHistory()"
+        />
+      </div>
+    </section>
+  }
+</div>

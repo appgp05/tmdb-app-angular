@@ -12,10 +12,11 @@ import { phosphorArrowUpRight } from '@ng-icons/phosphor-icons/regular';
 import { Movie } from '../../models/movie.models';
 import { MovieList } from "../../components/movie-list/movie-list";
 import { SearchGenres } from "../../components/search-components/search-genres/search-genres";
+import { SearchHistory } from "../../components/search-components/search-history/search-history";
 
 @Component({
   selector: 'app-search-page',
-  imports: [ReturnComponent, SearchBar, SearchResults, NgIcon, MovieList, SearchGenres],
+  imports: [ReturnComponent, SearchBar, SearchResults, NgIcon, MovieList, SearchGenres, SearchHistory],
   templateUrl: './search-page.html',
   styleUrl: './search-page.css',
   viewProviders: [provideIcons({ phosphorArrowUpRight })]
