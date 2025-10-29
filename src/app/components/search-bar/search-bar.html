@@ -18,6 +18,6 @@
   @if (!searchTerm()) {
     <ng-icon name="phosphorMagnifyingGlass"></ng-icon>
   } @else {
-    <ng-icon name="phosphorMagnifyingGlassBold"></ng-icon>
+    <ng-icon (click)="clearSearch()" name="phosphorXBold" class="cursor-pointer"></ng-icon>
   }
 </div>
