@@ -1,7 +1,7 @@
-@if (searchResults().length > 0) {
+@if (filteredResults().length > 0) {
   <div class="flex flex-col items-start"> 
     <ul class="flex flex-col gap-7">
-      @for (movie of searchResults(); track movie.id) {
+      @for (movie of filteredResults(); track movie.id) {
         <li 
           class="cursor-pointer"
           (click)="onMovieSelect(movie.id)"
